@@ -11,14 +11,11 @@ class Game {
     this.bike = new Bike();
     this.obstaclesArr = [];
     this.linesArr = [];
-    
-    this.line1 = this.linesArr.push(new Lines(350))
-    this.line2 = this.linesArr.push(new Lines(300))
-    this.line3 = this.linesArr.push(new Lines(250))
-    this.line4 = this.linesArr.push(new Lines(200))
-    
-  
-    
+
+    this.line1 = this.linesArr.push(new Lines(350));
+    this.line2 = this.linesArr.push(new Lines(300));
+    this.line3 = this.linesArr.push(new Lines(250));
+    this.line4 = this.linesArr.push(new Lines(200));
   }
   drawBackGroundSky = () => {
     ctx.drawImage(this.backGroundSky, 0, 0, canvas.width, this.skyLength);
@@ -37,9 +34,7 @@ class Game {
     }
   };
   linesSpawn = () => {
-    if (
-      this.linesArr[this.linesArr.length - 1].y > 300
-    ) {
+    if (this.linesArr[this.linesArr.length - 1].y > 180) {
       let newLines = new Lines(150);
       this.linesArr.push(newLines);
     }
@@ -70,26 +65,32 @@ class Game {
     // 3 mostramos pantalla final
     gameOverScreenDOM.style.display = "flex";
   };
+  
   // metodos de Game ==> todas las accionmes que se realizan en el juego
 
   gameLoop = () => {
     //console.log("ejecutando recursion");
     // 1 limpieza del canvas
     // 2 acciones y movimientos de los elementos
-    console.log(this.linesArr[0].speed)
+   // console.log(this.linesArr[0].speed);
+   
     this.obstacleSpawn();
     this.obstaclesArr.forEach((eachElement) => {
-      if (eachElement.x >= 290) {
+      if (eachElement.x >= 300) {
         eachElement.moveRight();
-      } else {
+      } else if (eachElement.x >= 281 && eachElement.x <= 299){
+        eachElement.moveFront();
+      }
+      else {
         eachElement.moveLeft();
       }
-      this.linesSpawn();
-      this.linesArr.forEach((eachElement) => {
-        eachElement.move();
-        //eachElement.checkPositionForGrow();
-      });
     });
+    this.linesSpawn();
+    this.linesArr.forEach((eachElement) => {
+      eachElement.move();
+      eachElement.checkPositionForGrow();
+    });
+
     // 3 dibujado de los elementos
     // EL ORDEN DE LOS ELEMENTOS ES IMPORTANTE
     this.drawRoad();
