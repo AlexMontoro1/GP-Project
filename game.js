@@ -11,6 +11,14 @@ class Game {
     this.bike = new Bike();
     this.obstaclesArr = [];
     this.linesArr = [];
+    
+    this.line1 = this.linesArr.push(new Lines(350))
+    this.line2 = this.linesArr.push(new Lines(300))
+    this.line3 = this.linesArr.push(new Lines(250))
+    this.line4 = this.linesArr.push(new Lines(200))
+    
+  
+    
   }
   drawBackGroundSky = () => {
     ctx.drawImage(this.backGroundSky, 0, 0, canvas.width, this.skyLength);
@@ -30,14 +38,30 @@ class Game {
   };
   linesSpawn = () => {
     if (
-      this.linesArr.length === 0 ||
-      this.linesArr[this.linesArr.length - 1].y > 220
+      this.linesArr[this.linesArr.length - 1].y > 300
     ) {
-      let newLines = new Lines();
+      let newLines = new Lines(150);
       this.linesArr.push(newLines);
     }
-  }
-
+  };
+  checkCollisionBiketoObstacle = () => {
+    this.obstaclesArr.forEach((eachElement) => {
+      if (
+        eachElement.x < this.bike.x + this.bike.w &&
+        eachElement.x + eachElement.w > this.bike.x &&
+        eachElement.y < this.bike.y + this.bike.h &&
+        eachElement.h + eachElement.y > this.bike.y
+      ) {
+        // Collision detected!
+        this.gameOver();
+      }
+    });
+  };
+  removeObstacleOut = () => {
+    if (this.obstaclesArr[0].y > 600) {
+      this.obstaclesArr.shift();
+    }
+  };
   gameOver = () => {
     // 1 detener el juego
     this.isGameOn = false;
@@ -49,9 +73,10 @@ class Game {
   // metodos de Game ==> todas las accionmes que se realizan en el juego
 
   gameLoop = () => {
-    console.log("ejecutando recursion");
+    //console.log("ejecutando recursion");
     // 1 limpieza del canvas
     // 2 acciones y movimientos de los elementos
+    console.log(this.linesArr[0].speed)
     this.obstacleSpawn();
     this.obstaclesArr.forEach((eachElement) => {
       if (eachElement.x >= 290) {
@@ -62,20 +87,23 @@ class Game {
       this.linesSpawn();
       this.linesArr.forEach((eachElement) => {
         eachElement.move();
-      })
+        //eachElement.checkPositionForGrow();
+      });
     });
     // 3 dibujado de los elementos
     // EL ORDEN DE LOS ELEMENTOS ES IMPORTANTE
     this.drawRoad();
     this.drawBackGroundSky();
     this.linesArr.forEach((eachElement) => {
-      eachElement.draw()
-    })
+      eachElement.draw();
+    });
     this.bike.draw();
     this.obstaclesArr.forEach((eachElement) => {
       eachElement.draw();
     });
-    console.log(this.linesArr)
+    this.checkCollisionBiketoObstacle();
+    this.removeObstacleOut();
+    //console.log(this.obstaclesArr.length);
     //console.log(this.roadLines())
 
     // 4 Recursion (requestAnimationFrame)
@@ -83,5 +111,4 @@ class Game {
       requestAnimationFrame(this.gameLoop); // invoca game loop
     }
   };
-
 }

@@ -8,6 +8,7 @@ class Obstacle {
         this.h = 20;
         this.speed = 0.5;
         this.moveToMe = 0.15;
+        this.growPart = 0;
       }
       draw = () => {
         ctx.drawImage(this.img, this.x, this.y, this.w, this.h);
@@ -15,10 +16,46 @@ class Obstacle {
       moveRight = () => {
         this.y += this.speed;
         this.x += this.moveToMe;
-
+        this.checkPositionForGrow()
+        if (this.growPart === 1) {
+          this.speed = 0.7;
+          this.moveToMe = 0.2;
+        } else if (this.growPart === 2) {
+          this.speed = 0.9;
+          this.moveToMe = 0.25;
+        } else if (this.growPart === 3) {
+          this.speed = 1.1;
+          this.moveToMe = 0.3;
+        }
       }
       moveLeft = () => {
         this.y += this.speed;
         this.x -= this.moveToMe;
+        this.checkPositionForGrow()
+        if (this.growPart === 1) {
+          this.speed = 0.7;
+          this.moveToMe = 0.2;
+        } else if (this.growPart === 2) {
+          this.speed = 0.9;
+          this.moveToMe = 0.25;
+        } else if (this.growPart === 3) {
+          this.speed = 1.1;
+          this.moveToMe = 0.3;
+        }
+      }
+      checkPositionForGrow = () => {
+        if(this.y > 200 && this.growPart === 0){
+          this.w = 30;
+          this.h = 30;
+          this.growPart = 1;
+        }if(this.y > 250 && this.growPart === 1){
+          this.w = 40;
+          this.h = 40;
+          this.growPart = 2;
+        }if(this.y > 300 && this.growPart === 2){
+          this.w = 60;
+          this.h = 60;
+          this.growPart = 3;
+        }
       }
 }
