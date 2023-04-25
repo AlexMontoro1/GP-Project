@@ -15,6 +15,9 @@ const startGame = () => {
   canvas.style.display = "block";
   // 2 crear los elementos del juego
   gameObj = new Game();
+  /*setInterval(() => {
+    console.log("algo") // cambiar aceleracion de todos lo elementos actuales, cambiar la aceleracion de todos los nuevos elementos del juego.
+  },1000)*/
   // 3 inciar el bucle del juego
   gameObj.gameLoop();
 };

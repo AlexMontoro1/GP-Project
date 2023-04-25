@@ -4,38 +4,53 @@ class Game {
     this.isGameOn = true;
     this.backGroundSky = new Image();
     this.backGroundSky.src = "images/sky-background-1.png";
-    this.skyLength = 150;
+    this.backGroundRight = new Image();
+    this.backGroundLeft = new Image();
+    this.mountain = new Image();
+    this.backGroundRight.src = "images/fondo-verde-derecha.png";
+    this.backGroundLeft.src = "images/fondo-verde-izquierda.png";
+    this.mountain.src = "images/mountain.png";
     this.road = new Image();
     this.road.src = "images/road.png";
-    this.roadLength = 600;
     this.bike = new Bike();
     this.obstaclesArr = [];
     this.linesArr = [];
 
-    this.line1 = this.linesArr.push(new Lines(350));
-    this.line2 = this.linesArr.push(new Lines(300));
-    this.line3 = this.linesArr.push(new Lines(250));
-    this.line4 = this.linesArr.push(new Lines(200));
+    this.line1 = this.linesArr.push(new Lines(430,0.9,1));
+    this.line2 = this.linesArr.push(new Lines(330,0.9,1));
+    this.line3 = this.linesArr.push(new Lines(230,0.9,1));
+    this.line4 = this.linesArr.push(new Lines(130,0.9,1));
+    this.frames = 0;
+    console.log(this.frames)
   }
   drawBackGroundSky = () => {
-    ctx.drawImage(this.backGroundSky, 0, 0, canvas.width, this.skyLength);
+    ctx.drawImage(this.backGroundSky, 0, 0, canvas.width, 135);
   };
   drawRoad = () => {
-    ctx.drawImage(this.road, 0, 0, canvas.width, this.roadLength);
+    ctx.drawImage(this.road, 0, 0, canvas.width, 600);
   };
+  drawBackGroundRight = () => {
+    ctx.drawImage(this.backGroundRight, 300, 135, 340, 465);
+  }
+  drawBackGroundLeft = () => {
+    ctx.drawImage(this.backGroundLeft, 0, 135, 340, 465);
+  }
+  drawMountain = () => {
+    ctx.drawImage(this.mountain, 0, 0, canvas.width, 190);
+  }
   obstacleSpawn = () => {
     if (
       this.obstaclesArr.length === 0 ||
       this.obstaclesArr[this.obstaclesArr.length - 1].y > 300
     ) {
       let randomPositionX = Math.random() * 50 + 265;
-      let newObstacle = new Obstacle(randomPositionX);
+      let newObstacle = new Obstacle(randomPositionX,1);
       this.obstaclesArr.push(newObstacle);
     }
   };
   linesSpawn = () => {
     if (this.linesArr[this.linesArr.length - 1].y > 180) {
-      let newLines = new Lines(150);
+      let newLines = new Lines(135, 1);
       this.linesArr.push(newLines);
     }
   };
@@ -57,6 +72,11 @@ class Game {
       this.obstaclesArr.shift();
     }
   };
+  removeLinesOut = () => {
+    if (this.linesArr[0].y > 600) {
+      this.linesArr.shift();
+    }
+  };
   gameOver = () => {
     // 1 detener el juego
     this.isGameOn = false;
@@ -69,11 +89,10 @@ class Game {
   // metodos de Game ==> todas las accionmes que se realizan en el juego
 
   gameLoop = () => {
-    //console.log("ejecutando recursion");
+    this.frames++
+    //console.log(this.frames)
     // 1 limpieza del canvas
     // 2 acciones y movimientos de los elementos
-   // console.log(this.linesArr[0].speed);
-   
     this.obstacleSpawn();
     this.obstaclesArr.forEach((eachElement) => {
       if (eachElement.x >= 300) {
@@ -85,16 +104,24 @@ class Game {
         eachElement.moveLeft();
       }
     });
+    this.obstaclesArr.forEach((eachElement) => {
+      eachElement.acceleration = this.frames/1500
+    })
     this.linesSpawn();
     this.linesArr.forEach((eachElement) => {
       eachElement.move();
       eachElement.checkPositionForGrow();
     });
-
+    this.linesArr.forEach((eachElement) => {
+      eachElement.acceleration = this.frames/1500
+    })
     // 3 dibujado de los elementos
     // EL ORDEN DE LOS ELEMENTOS ES IMPORTANTE
-    this.drawRoad();
     this.drawBackGroundSky();
+    this.drawMountain();
+    this.drawBackGroundRight();
+    this.drawBackGroundLeft();
+    this.drawRoad();
     this.linesArr.forEach((eachElement) => {
       eachElement.draw();
     });
@@ -104,8 +131,7 @@ class Game {
     });
     this.checkCollisionBiketoObstacle();
     this.removeObstacleOut();
-    //console.log(this.obstaclesArr.length);
-    //console.log(this.roadLines())
+    this.removeLinesOut();
 
     // 4 Recursion (requestAnimationFrame)
     if (this.isGameOn === true) {
