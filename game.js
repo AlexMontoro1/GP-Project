@@ -3,25 +3,28 @@ class Game {
   constructor() {
     this.isGameOn = true;
     this.backGroundSky = new Image();
-    this.backGroundSky.src = "images/sky-background-1.png";
     this.backGroundRight = new Image();
     this.backGroundLeft = new Image();
     this.mountain = new Image();
+    this.road = new Image();
+    this.scoreImage = new Image();
+    this.backGroundSky.src = "images/sky-background-1.png";
     this.backGroundRight.src = "images/fondo-verde-derecha.png";
     this.backGroundLeft.src = "images/fondo-verde-izquierda.png";
     this.mountain.src = "images/mountain.png";
-    this.road = new Image();
     this.road.src = "images/road.png";
+    this.scoreImage.src = "images/score.png"
     this.bike = new Bike();
     this.obstaclesArr = [];
     this.linesArr = [];
+    this.coinsArr = [];
 
-    this.line1 = this.linesArr.push(new Lines(430,0.9,1));
-    this.line2 = this.linesArr.push(new Lines(330,0.9,1));
-    this.line3 = this.linesArr.push(new Lines(230,0.9,1));
-    this.line4 = this.linesArr.push(new Lines(130,0.9,1));
+    this.line1 = this.linesArr.push(new Lines(430, 1));
+    this.line2 = this.linesArr.push(new Lines(330, 1));
+    this.line3 = this.linesArr.push(new Lines(230, 1));
+    this.line4 = this.linesArr.push(new Lines(130, 1));
     this.frames = 0;
-    console.log(this.frames)
+    this.score = 0;
   }
   drawBackGroundSky = () => {
     ctx.drawImage(this.backGroundSky, 0, 0, canvas.width, 135);
@@ -31,12 +34,19 @@ class Game {
   };
   drawBackGroundRight = () => {
     ctx.drawImage(this.backGroundRight, 300, 135, 340, 465);
-  }
+  };
   drawBackGroundLeft = () => {
     ctx.drawImage(this.backGroundLeft, 0, 135, 340, 465);
-  }
+  };
   drawMountain = () => {
     ctx.drawImage(this.mountain, 0, 0, canvas.width, 190);
+  };
+  drawScoreImage = () => {
+    ctx.drawImage(this.scoreImage, 250, 0, 100, 30);
+  }
+  drawScore = () => {
+    ctx.font = "20px Comis Sans MS"
+    ctx.strokeText(this.score, 293, 60)
   }
   obstacleSpawn = () => {
     if (
@@ -44,7 +54,7 @@ class Game {
       this.obstaclesArr[this.obstaclesArr.length - 1].y > 300
     ) {
       let randomPositionX = Math.random() * 50 + 265;
-      let newObstacle = new Obstacle(randomPositionX,1);
+      let newObstacle = new Obstacle(randomPositionX, 1);
       this.obstaclesArr.push(newObstacle);
     }
   };
@@ -52,6 +62,16 @@ class Game {
     if (this.linesArr[this.linesArr.length - 1].y > 180) {
       let newLines = new Lines(135, 1);
       this.linesArr.push(newLines);
+    }
+  };
+  coinSpawn = () => {
+    if (
+      this.coinsArr.length === 0 ||
+      this.coinsArr[this.coinsArr.length - 1].y > 300
+    ) {
+      let randomPositionX = Math.random() * 50 + 265;
+      let newCoin = new Coin(randomPositionX, 1);
+      this.coinsArr.push(newCoin);
     }
   };
   checkCollisionBiketoObstacle = () => {
@@ -67,6 +87,22 @@ class Game {
       }
     });
   };
+  checkCollisionBiketoCoin = () => {
+    this.coinsArr.forEach((eachElement) => {
+      if (
+        eachElement.x < this.bike.x + this.bike.w &&
+        eachElement.x + eachElement.w > this.bike.x &&
+        eachElement.y < this.bike.y + this.bike.h &&
+        eachElement.h + eachElement.y > this.bike.y
+      ) {
+        // Collision detected!
+        this.coinsArr.shift();
+        this.score++;
+        console.log(this.score);
+      }
+    });
+  };
+  
   removeObstacleOut = () => {
     if (this.obstaclesArr[0].y > 600) {
       this.obstaclesArr.shift();
@@ -75,6 +111,11 @@ class Game {
   removeLinesOut = () => {
     if (this.linesArr[0].y > 600) {
       this.linesArr.shift();
+    }
+  };
+  removeCoinsOut = () => {
+    if (this.coinsArr[0].y > 600) {
+      this.coinsArr.shift();
     }
   };
   gameOver = () => {
@@ -89,7 +130,7 @@ class Game {
   // metodos de Game ==> todas las accionmes que se realizan en el juego
 
   gameLoop = () => {
-    this.frames++
+    this.frames++;
     //console.log(this.frames)
     // 1 limpieza del canvas
     // 2 acciones y movimientos de los elementos
@@ -97,27 +138,41 @@ class Game {
     this.obstaclesArr.forEach((eachElement) => {
       if (eachElement.x >= 300) {
         eachElement.moveRight();
-      } else if (eachElement.x >= 281 && eachElement.x <= 299){
+      } else if (eachElement.x >= 281 && eachElement.x <= 299) {
         eachElement.moveFront();
-      }
-      else {
+      } else {
         eachElement.moveLeft();
       }
     });
     this.obstaclesArr.forEach((eachElement) => {
-      eachElement.acceleration = this.frames/1500
-    })
+      eachElement.acceleration = this.frames / 1500;
+    });
     this.linesSpawn();
     this.linesArr.forEach((eachElement) => {
       eachElement.move();
       eachElement.checkPositionForGrow();
     });
     this.linesArr.forEach((eachElement) => {
-      eachElement.acceleration = this.frames/1500
-    })
+      eachElement.acceleration = this.frames / 1500;
+    });
+    this.coinSpawn();
+    this.coinsArr.forEach((eachElement) => {
+      if (eachElement.x >= 300) {
+        eachElement.moveRight();
+      } else if (eachElement.x >= 281 && eachElement.x <= 299) {
+        eachElement.moveFront();
+      } else {
+        eachElement.moveLeft();
+      }
+    });
+    this.coinsArr.forEach((eachElement) => {
+      eachElement.acceleration = this.frames / 1500;
+    });
     // 3 dibujado de los elementos
     // EL ORDEN DE LOS ELEMENTOS ES IMPORTANTE
     this.drawBackGroundSky();
+    this.drawScoreImage();
+    this.drawScore();
     this.drawMountain();
     this.drawBackGroundRight();
     this.drawBackGroundLeft();
@@ -129,9 +184,15 @@ class Game {
     this.obstaclesArr.forEach((eachElement) => {
       eachElement.draw();
     });
+    this.coinsArr.forEach((eachElement) => {
+      eachElement.draw();
+    });
+
     this.checkCollisionBiketoObstacle();
+    this.checkCollisionBiketoCoin();
     this.removeObstacleOut();
     this.removeLinesOut();
+    this.removeCoinsOut();
 
     // 4 Recursion (requestAnimationFrame)
     if (this.isGameOn === true) {
