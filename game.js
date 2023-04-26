@@ -46,7 +46,7 @@ class Game {
     ctx.drawImage(this.scoreImage, 250, 0, 100, 30);
   };
   drawScore = () => {
-    ctx.font = "20px Comis Sans MS";
+    ctx.font = "30px fuenteCuadrada";
     ctx.strokeText(this.score, 293, 60);
   };
   obstacleSpawn = () => {
@@ -77,7 +77,7 @@ class Game {
   };
   clockSpawn = () => {
     if (
-      this.frames === 3000
+      this.frames === 4000 || this.frames === 5000
       //this.clocksArr[this.clocksArr.length - 1].y > 3000
     ) {
       let randomPositionX = Math.random() * 50 + 265;
@@ -113,6 +113,7 @@ class Game {
     });
   };
   checkCollisionBiketoClock = () => {
+   
     this.clocksArr.forEach((eachElement) => {
       if (
         eachElement.x < this.bike.x + this.bike.w &&
@@ -141,6 +142,11 @@ class Game {
       this.coinsArr.shift();
     }
   };
+  /*removeClocksOut = () => {
+    if (this.clocksArr[0].y > 600) {
+      this.clocksArr.shift();
+    }
+  };*/
   gameOver = () => {
     // 1 detener el juego
     this.isGameOn = false;
@@ -233,6 +239,7 @@ class Game {
     this.removeObstacleOut();
     this.removeLinesOut();
     this.removeCoinsOut();
+    //this.removeClocksOut();
 
     // 4 Recursion (requestAnimationFrame)
     if (this.isGameOn === true) {
