@@ -12,17 +12,45 @@
 
         <!-- Start screen -->
         <div id="start-screen" class="container">
-          <img src="" width="500" alt="logo">
-          <button id="start-btn">GO ROAD!</button>
+          <img src="images/GP-Project.png" width="600" alt="logo">
+          <img src="images/start-screen-logo.png" width="300" alt="lowLogo">
+          <button id="start-btn"></button>
+          <input type="checkbox" id="show-instructions">
+          <label for="show-instructions">
+            <img src="images/Instructions.png" width="200" alt="Instructions">
+          </label>
+          <div id="instructions" style="display:none;">
+            <p>
+            Use the cursor
+            <img src="images/cursor.png" width="15" alt="cursor"> 
+            to move your rider
+            <img src="images/bike-1.png" width="30" alt="rider">
+             to the sides
+            <img src="images/right-and-left.png" width="30" alt="right-and-left"> 
+            trying to avoid the other riders
+            <img src="images/bike-2.png" width="30" alt="obstacles"> 
+            while you get all the coins you can.
+            <img src="images/coin.png" width="20" alt="coin">
+            </p> 
+            <p>
+            Your rider will go faster and faster so if you find a clock
+            <img src="images/clock.png" width="20" alt="clock">
+            , you can slow down and continue getting coins.
+            </p>
+            <p>
+              Use space
+              <img src="images/spacebar.png" width="50" alt="space-key">
+               to pause and resume the game.
+            </p>
+          </div>
         </div>
         
         <!-- game window -->
         <canvas id="my-canvas" width="600" height="600"></canvas>
-        <button id="pause">||</button>
         <!-- game over -->
         <div id="gameover-screen" class="container">
-          <img src="" width="500" alt="logo">
-          <button id="restart-btn">Play Again!</button>
+          <img src="images/gameOver.png" width="500" alt="logo">
+          <button id="restart-btn"></button>
         </div>
     
       </div>

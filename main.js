@@ -3,7 +3,8 @@ const gameOverScreenDOM = document.querySelector("#gameover-screen");
 const startBtnDOM = document.querySelector("#start-btn");
 const restartBtnDOM = document.querySelector("#restart-btn");
 const canvas = document.querySelector("#my-canvas");
-const pauseBtnDOM = document.querySelector("#pause");
+const checkBoxDOM = document.querySelector("#show-instructions");
+const instructionsDOM = document.querySelector("#instructions");
 const customFont = new FontFace("fuenteCuadrada","url(3x5/OTF/3X5_____.otf)");
 document.fonts.add(customFont);
 const ctx = canvas.getContext("2d");
@@ -34,8 +35,8 @@ const restartGame = () => {
 
 startBtnDOM.addEventListener("click", startGame);
 restartBtnDOM.addEventListener("click", restartGame);
-pauseBtnDOM.addEventListener("click", () => {
-  if (gameObj !== undefined && gameObj.isGameOn === true) {
+window.addEventListener("keydown", (event) => {
+  if (gameObj !== undefined && gameObj.isGameOn === true && event.code === "Space") {
     gameObj.isGameOn = false;
   } else {
     gameObj.isGameOn = true;
@@ -57,4 +58,11 @@ canvas.addEventListener("mousemove", (event) => {
             gameObj.bike.x = mouseX;
         }
     }
+});
+checkBoxDOM.addEventListener("change", () => {
+  if (checkBoxDOM.checked){
+    instructionsDOM.style.display = "block";
+  }else{
+    instructionsDOM.style.display = "none";
+  }
 })

@@ -43,11 +43,11 @@ class Game {
     ctx.drawImage(this.mountain, 0, 0, canvas.width, 190);
   };
   drawScoreImage = () => {
-    ctx.drawImage(this.scoreImage, 250, 0, 100, 30);
+    ctx.drawImage(this.scoreImage, 245, 0, 100, 30);
   };
   drawScore = () => {
     ctx.font = "30px fuenteCuadrada";
-    ctx.strokeText(this.score, 293, 60);
+    ctx.strokeText(this.score, 285, 60);
   };
   obstacleSpawn = () => {
     if (
@@ -77,9 +77,10 @@ class Game {
   };
   clockSpawn = () => {
     if (
-      this.frames === 4000 || this.frames === 5000
+      this.frames === 4000 || this.frames === 5000 || this.frames === 6000 || this.frames === 7000 || this.frames === 8000 || this.frames === 9000
       //this.clocksArr[this.clocksArr.length - 1].y > 3000
     ) {
+      this.clocksArr.shift()
       let randomPositionX = Math.random() * 50 + 265;
       let newclock = new Clock(randomPositionX, 1);
       this.clocksArr.push(newclock);
@@ -123,7 +124,8 @@ class Game {
       ) {
         // Collision detected!
         this.clocksArr.shift();
-        this.frames = this.frames - 2000;
+        let randomNum = Math.random()
+        this.frames = this.frames - (Math.floor(randomNum * 1000) + 1500);
       }
     });
   };
