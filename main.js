@@ -8,6 +8,10 @@ const instructionsDOM = document.querySelector("#instructions");
 const welcomeDOM = document.querySelector("#welcome");
 const nameTextDOM = document.querySelector("#name-text");
 const createNameDOM = document.querySelector("#name-button");
+const scoreResultDOM = document.querySelector("#score-result");
+const muteCheckBoxDOM = document.querySelector("#mute");
+const muteButtonDOM = document.querySelector("#mute-button");
+const unMuteButtonDOM = document.querySelector("#unmute-button");
 const customFont = new FontFace("fuenteCuadrada","url(3x5/OTF/3X5_____.otf)");
 const audio = new Audio();
 const audioCollision = new Audio();
@@ -26,6 +30,7 @@ const startGame = () => {
   // 1 cambiar las pantallas de juego
   startscreenDOM.style.display = "none";
   canvas.style.display = "block";
+  muteButtonDOM.style.display = "block";
   // 2 crear los elementos del juego
   gameObj = new Game();
   /*setInterval(() => {
@@ -40,6 +45,7 @@ const restartGame = () => {
   audio.loop = true;
   gameOverScreenDOM.style.display = "none";
   canvas.style.display = "block";
+  muteButtonDOM.style.display = "block";
   gameObj = new Game();
   gameObj.gameLoop();
 };
@@ -48,14 +54,20 @@ const addName = () => {
   welcomeDOM.innerHTML = `¿${nameTextDOM.value} are you ready to RIDE?`;
 };
 
+const scoreResult = () => {
+  scoreResultDOM.innerHTML = `${nameTextDOM.value} you get ${gameObj.score} COINS!!`
+};
+
 // * ADD EVENT LISTENERS
 
 startBtnDOM.addEventListener("click", startGame);
 restartBtnDOM.addEventListener("click", restartGame);
 window.addEventListener("keydown", (event) => {
   if (gameObj !== undefined && gameObj.isGameOn === true && event.code === "Space") {
+    audio.pause();
     gameObj.isGameOn = false;
-  } else {
+  } else if(gameObj !== undefined && gameObj.isGameOn === false && event.code === "Space"){
+    audio.play();
     gameObj.isGameOn = true;
     gameObj.gameLoop();
   }
@@ -81,6 +93,19 @@ checkBoxDOM.addEventListener("change", () => {
     instructionsDOM.style.display = "block";
   }else{
     instructionsDOM.style.display = "none";
+  }
+});
+muteCheckBoxDOM.addEventListener("change", () => {
+  if (muteCheckBoxDOM.checked){
+    muteButtonDOM.style.display = "none";
+    unMuteButtonDOM.style.display = "block";
+    audio.volume = 0;
+    audioCollision.volume = 0;
+  }else{
+    muteButtonDOM.style.display = "block";
+    unMuteButtonDOM.style.display = "none";
+    audio.volume = 0.2;
+    audioCollision.volume = 0.1;
   }
 });
 createNameDOM.addEventListener("click", addName);

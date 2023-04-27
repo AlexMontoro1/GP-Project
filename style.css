@@ -74,7 +74,12 @@ body {
     font-size: 180%;
     font-family:'True2D';
   }
-  
+  #score-result{
+    font-family:'True2D';
+    font-size: 300%;
+    margin-top: 40px;
+    color: whitesmoke;
+  }
   .container {
     display: flex;
     flex-direction: column;
@@ -84,5 +89,11 @@ body {
   }
   
   #my-canvas, #gameover-screen {
+    display: none;
+  }
+  #mute{
+    appearance: none;
+  }
+  #mute-button, #unmute-button{
     display: none;
   }

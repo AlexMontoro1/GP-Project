@@ -95,10 +95,11 @@ class Game {
         eachElement.h + eachElement.y > this.bike.y
       ) {
         // Collision detected!
-        audioCollision.play()
+        audioCollision.play();
         this.gameOver();
-        audio.pause()
+        audio.pause();
         audio.loop = false;
+        scoreResult();
       }
       
     });
@@ -159,6 +160,7 @@ class Game {
     // 2 ocultar el canvas
     canvas.style.display = "none";
     // 3 mostramos pantalla final
+    muteButtonDOM.style.display = "none";
     gameOverScreenDOM.style.display = "flex";
   };
 
@@ -166,7 +168,6 @@ class Game {
 
   gameLoop = () => {
     this.frames++;
-    console.log(this.frames);
     // 1 limpieza del canvas
     // 2 acciones y movimientos de los elementos
     this.obstacleSpawn();
