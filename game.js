@@ -95,8 +95,12 @@ class Game {
         eachElement.h + eachElement.y > this.bike.y
       ) {
         // Collision detected!
+        audioCollision.play()
         this.gameOver();
+        audio.pause()
+        audio.loop = false;
       }
+      
     });
   };
   checkCollisionBiketoCoin = () => {

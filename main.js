@@ -5,13 +5,24 @@ const restartBtnDOM = document.querySelector("#restart-btn");
 const canvas = document.querySelector("#my-canvas");
 const checkBoxDOM = document.querySelector("#show-instructions");
 const instructionsDOM = document.querySelector("#instructions");
+const welcomeDOM = document.querySelector("#welcome");
+const nameTextDOM = document.querySelector("#name-text");
+const createNameDOM = document.querySelector("#name-button");
 const customFont = new FontFace("fuenteCuadrada","url(3x5/OTF/3X5_____.otf)");
+const audio = new Audio();
+const audioCollision = new Audio();
+audio.src = "audios/motorcycle-ride-01 (mp3cut.net) (2).mp3";
+audioCollision.src = "audios/collision.mp3";
+audio.volume = 0.2;
+audioCollision.volume = 0.1;
 document.fonts.add(customFont);
 const ctx = canvas.getContext("2d");
 let gameObj;
 
 // * STATE MANAGEMENT FUNCTIONS
 const startGame = () => {
+  audio.play()
+  audio.loop = true;
   // 1 cambiar las pantallas de juego
   startscreenDOM.style.display = "none";
   canvas.style.display = "block";
@@ -25,10 +36,16 @@ const startGame = () => {
 };
 
 const restartGame = () => {
+  audio.play()
+  audio.loop = true;
   gameOverScreenDOM.style.display = "none";
   canvas.style.display = "block";
   gameObj = new Game();
   gameObj.gameLoop();
+};
+
+const addName = () => {
+  welcomeDOM.innerHTML = `¿${nameTextDOM.value} are you ready to RIDE?`;
 };
 
 // * ADD EVENT LISTENERS
@@ -65,4 +82,5 @@ checkBoxDOM.addEventListener("change", () => {
   }else{
     instructionsDOM.style.display = "none";
   }
-})
+});
+createNameDOM.addEventListener("click", addName);
