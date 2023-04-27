@@ -96,4 +96,12 @@ body {
   }
   #mute-button, #unmute-button{
     display: none;
+    border-style: solid;
+    border-radius: 10%;
+    background-color: gray;
+    padding-top: 4px;
+    padding-left: 2px;
+    padding-right: 2px;;
+    
+    
   }

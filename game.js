@@ -43,11 +43,11 @@ class Game {
     ctx.drawImage(this.mountain, 0, 0, canvas.width, 190);
   };
   drawScoreImage = () => {
-    ctx.drawImage(this.scoreImage, 245, 0, 100, 30);
+    ctx.drawImage(this.scoreImage, 240, 20, 100, 30);
   };
   drawScore = () => {
-    ctx.font = "30px fuenteCuadrada";
-    ctx.strokeText(this.score, 285, 60);
+    ctx.font = "50px fuente";
+    ctx.strokeText(this.score, 350, 53);
   };
   obstacleSpawn = () => {
     if (
@@ -77,10 +77,14 @@ class Game {
   };
   clockSpawn = () => {
     if (
-      this.frames === 4000 || this.frames === 5000 || this.frames === 6000 || this.frames === 7000 || this.frames === 8000 || this.frames === 9000
-      //this.clocksArr[this.clocksArr.length - 1].y > 3000
+      this.frames === 4000 ||
+      this.frames === 5000 ||
+      this.frames === 6000 ||
+      this.frames === 7000 ||
+      this.frames === 8000 ||
+      this.frames === 9000
     ) {
-      this.clocksArr.shift()
+      this.clocksArr.shift();
       let randomPositionX = Math.random() * 50 + 265;
       let newclock = new Clock(randomPositionX, 1);
       this.clocksArr.push(newclock);
@@ -95,13 +99,13 @@ class Game {
         eachElement.h + eachElement.y > this.bike.y
       ) {
         // Collision detected!
+        audio.pause();
         audioCollision.play();
         this.gameOver();
-        audio.pause();
+
         audio.loop = false;
         scoreResult();
       }
-      
     });
   };
   checkCollisionBiketoCoin = () => {
@@ -119,7 +123,6 @@ class Game {
     });
   };
   checkCollisionBiketoClock = () => {
-   
     this.clocksArr.forEach((eachElement) => {
       if (
         eachElement.x < this.bike.x + this.bike.w &&
@@ -129,7 +132,7 @@ class Game {
       ) {
         // Collision detected!
         this.clocksArr.shift();
-        let randomNum = Math.random()
+        let randomNum = Math.random();
         this.frames = this.frames - (Math.floor(randomNum * 1000) + 1500);
       }
     });
@@ -149,11 +152,7 @@ class Game {
       this.coinsArr.shift();
     }
   };
-  /*removeClocksOut = () => {
-    if (this.clocksArr[0].y > 600) {
-      this.clocksArr.shift();
-    }
-  };*/
+
   gameOver = () => {
     // 1 detener el juego
     this.isGameOn = false;
@@ -246,7 +245,6 @@ class Game {
     this.removeObstacleOut();
     this.removeLinesOut();
     this.removeCoinsOut();
-    //this.removeClocksOut();
 
     // 4 Recursion (requestAnimationFrame)
     if (this.isGameOn === true) {
