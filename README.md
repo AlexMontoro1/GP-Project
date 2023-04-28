@@ -47,10 +47,10 @@ GP-Project is a game where you are on a road where you have to get coins and avo
 
 ## index.html
 
-- <!-- Start screen -->
-- <!-- Game window -->
-- <!-- Game over -->
-- <scripts>
+- Start screen -->
+- Game window -->
+- Game over -->
+- scripts
 
 ## style.css
 
