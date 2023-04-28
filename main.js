@@ -41,6 +41,7 @@ const startGame = () => {
 };
 
 const restartGame = () => {
+  // Volvemos a poner en marcha la maquinaria dell game
   audio.play();
   audio.loop = true;
   gameOverScreenDOM.style.display = "none";
@@ -51,10 +52,12 @@ const restartGame = () => {
 };
 
 const addName = () => {
+  // Aqui cogemos el valor del nombre que ponemos en la página principal y lo usamos para un mensaje de bienvenida.
   welcomeDOM.innerHTML = `¿${nameTextDOM.value} are you ready to RIDE?`;
 };
 
 const scoreResult = () => {
+  // Aqui cogemos el nombre que hemos puesto en la bienvenido y lo usamos para, en la pantalla de gameover, se refieran a ti te den el resultado de tu score.
   scoreResultDOM.innerHTML = `${nameTextDOM.value} you get ${gameObj.score} COINS!!`;
 };
 
@@ -63,6 +66,7 @@ const scoreResult = () => {
 startBtnDOM.addEventListener("click", startGame);
 restartBtnDOM.addEventListener("click", restartGame);
 window.addEventListener("keydown", (event) => {
+  // Evento en el que pausamos en el juego con el espacio.
   if (
     gameObj !== undefined &&
     gameObj.isGameOn === true &&
@@ -82,6 +86,7 @@ window.addEventListener("keydown", (event) => {
   }
 });
 canvas.addEventListener("mousemove", (event) => {
+  // Evento en el que movemos el personaje principal hasta ciertos límites en el eje X, usando el cursor.
   if (gameObj !== undefined) {
     mouseX = event.offsetX;
     if (mouseX > canvas.width - 530 && mouseX < canvas.width - 130) {
@@ -90,6 +95,7 @@ canvas.addEventListener("mousemove", (event) => {
   }
 });
 checkBoxDOM.addEventListener("change", () => {
+  // checkbox de las instrucciones, para que aparezcan y desaparezcan.
   if (checkBoxDOM.checked) {
     instructionsDOM.style.display = "block";
   } else {
@@ -97,6 +103,7 @@ checkBoxDOM.addEventListener("change", () => {
   }
 });
 muteCheckBoxDOM.addEventListener("change", () => {
+  // checkbox para que funcione el mute y unmute y que se vayan cambiando las imagenes depende de si hay sonido o no.
   if (muteCheckBoxDOM.checked) {
     muteButtonDOM.style.display = "none";
     unMuteButtonDOM.style.display = "block";
@@ -110,6 +117,7 @@ muteCheckBoxDOM.addEventListener("change", () => {
   }
 });
 muteCheckBoxDOM.addEventListener("keyup", (event) => {
+  // para que el espacio al pausar no haga contacto con el mute que hemos seleccionado con anterioridad, ya que se queda seleccionado y con el espacio se acciona.
   event.preventDefault();
 });
 createNameDOM.addEventListener("click", addName);

@@ -50,6 +50,7 @@ class Game {
     ctx.strokeText(this.score, 350, 53);
   };
   obstacleSpawn = () => {
+    //aqui hacemos que los obstaculos spawneen aleatoriamente en un pequeño rango del eje x que seria el principio de la carretera.
     if (
       this.obstaclesArr.length === 0 ||
       this.obstaclesArr[this.obstaclesArr.length - 1].y > 300
@@ -66,6 +67,7 @@ class Game {
     }
   };
   coinSpawn = () => {
+    // lo mismo que con los obstaculos pero con las monedas
     if (
       this.coinsArr.length === 0 ||
       this.coinsArr[this.coinsArr.length - 1].y > 300
@@ -76,6 +78,7 @@ class Game {
     }
   };
   clockSpawn = () => {
+    // para que el reloj spawnee en los siguientes frames
     if (
       this.frames === 4000 ||
       this.frames === 5000 ||
@@ -91,6 +94,7 @@ class Game {
     }
   };
   checkCollisionBiketoObstacle = () => {
+    // una colision por todos los lados a los obstaculos.
     this.obstaclesArr.forEach((eachElement) => {
       if (
         eachElement.x < this.bike.x + this.bike.w &&
@@ -131,6 +135,7 @@ class Game {
         eachElement.h + eachElement.y > this.bike.y
       ) {
         // Collision detected!
+        // Aqui lo que hemos hecho es que cuando se efectue la colision con el reloj, los frames que estamos almacenando en la variable, bajen un numero random entre un rango determinado, y de una sensacion al juego de reduccion de velocidad.
         this.clocksArr.shift();
         let randomNum = Math.random();
         this.frames = this.frames - (Math.floor(randomNum * 1000) + 1500);
@@ -179,6 +184,7 @@ class Game {
         eachElement.moveLeft();
       }
     });
+    // en todos estos metodos de movimiento aplicamos una aceleracion que va en base a los frames que va contando el propio juego.
     this.obstaclesArr.forEach((eachElement) => {
       eachElement.acceleration = this.frames / 1500;
     });
